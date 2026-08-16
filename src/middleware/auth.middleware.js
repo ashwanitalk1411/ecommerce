@@ -1,16 +1,17 @@
 const jwt = require("jsonwebtoken");
 const STATUS = require("../utils/appStatusCode");
+const { errorResponse } = require("../utils/response");
 
 function authenticate(req, res, next) {
   try {
     const header = req.headers.authorization;
 
     if (!header || !header.startsWith("Bearer ")) {
-      return res.status(STATUS.UNAUTHORIZED).json({
-        success: false,
-        statusCode: STATUS.UNAUTHORIZED,
-        message: "Authentication token is required"
-      });
+      return errorResponse(
+        res,
+        "Authentication token is required",
+        STATUS.UNAUTHORIZED
+      );
     }
 
     const token = header.split(" ")[1];
@@ -19,11 +20,11 @@ function authenticate(req, res, next) {
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(STATUS.UNAUTHORIZED).json({
-      success: false,
-      statusCode: STATUS.UNAUTHORIZED,
-      message: "Invalid or expired token"
-    });
+    return errorResponse(
+      res,
+      "Invalid or expired token",
+      STATUS.UNAUTHORIZED
+    );
   }
 }
 

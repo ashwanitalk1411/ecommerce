@@ -1,11 +1,12 @@
 const STATUS = require("../utils/appStatusCode");
+const { errorResponse } = require("../utils/response");
 
 function notFound(req, res) {
-  return res.status(STATUS.NOT_FOUND).json({
-    success: false,
-    statusCode: STATUS.NOT_FOUND,
-    message: `Route not found: ${req.method} ${req.originalUrl}`
-  });
+  return errorResponse(
+    res,
+    `Route not found: ${req.method} ${req.originalUrl}`,
+    STATUS.NOT_FOUND
+  );
 }
 
 function errorHandler(error, req, res, next) {
@@ -13,12 +14,13 @@ function errorHandler(error, req, res, next) {
 
   const statusCode = error.statusCode || STATUS.INTERNAL_SERVER_ERROR;
 
-  return res.status(statusCode).json({
-    success: false,
+  return errorResponse(
+    res,
+    error.message || "Internal server error",
     statusCode,
-    message: error.message || "Internal server error",
-    ...(error.details ? { details: error.details } : {})
-  });
+    error.details || null
+  );
 }
 
 module.exports = { notFound, errorHandler };
+

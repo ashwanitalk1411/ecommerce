@@ -1,4 +1,5 @@
 const STATUS = require("../utils/appStatusCode");
+const { errorResponse } = require("../utils/response");
 
 function validate(schema) {
   return (req, res, next) => {
@@ -8,12 +9,12 @@ function validate(schema) {
     });
 
     if (error) {
-      return res.status(STATUS.BAD_REQUEST).json({
-        success: false,
-        statusCode: STATUS.BAD_REQUEST,
-        message: "Validation failed",
-        errors: error.details.map((item) => item.message)
-      });
+      return errorResponse(
+        res,
+        "Validation failed",
+        STATUS.BAD_REQUEST,
+        error.details.map((item) => item.message)
+      );
     }
 
     req.body = value;

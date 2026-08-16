@@ -6,16 +6,16 @@ const productRoutes = require("./routes/product.routes");
 const cartRoutes = require("./routes/cart.routes");
 const { notFound, errorHandler } = require("./middleware/error.middleware");
 
+const { successResponse } = require("./utils/response");
+const STATUS = require("./utils/appStatusCode");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "API is running"
-  });
+  return successResponse(res, null, "API is running", STATUS.OK);
 });
 
 app.use("/api/auth", authRoutes);

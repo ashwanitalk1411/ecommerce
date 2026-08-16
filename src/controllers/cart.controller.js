@@ -1,13 +1,17 @@
 const cartService = require("../services/cart.service");
+const { successResponse } = require("../utils/response");
+const STATUS = require("../utils/appStatusCode");
 
 async function getCart(req, res, next) {
   try {
     const cart = await cartService.getCart(req.user.id);
 
-    res.json({
-      success: true,
-      data: cart
-    });
+    return successResponse(
+      res,
+      cart,
+      "Cart retrieved successfully",
+      STATUS.OK
+    );
   } catch (error) {
     next(error);
   }
@@ -21,11 +25,12 @@ async function addItem(req, res, next) {
       req.body.quantity
     );
 
-    res.status(201).json({
-      success: true,
-      message: "Item added to cart",
-      data: item
-    });
+    return successResponse(
+      res,
+      item,
+      "Item added to cart",
+      STATUS.CREATED
+    );
   } catch (error) {
     next(error);
   }
@@ -39,11 +44,12 @@ async function updateItem(req, res, next) {
       req.body.quantity
     );
 
-    res.json({
-      success: true,
-      message: "Cart item updated",
-      data: item
-    });
+    return successResponse(
+      res,
+      item,
+      "Cart item updated",
+      STATUS.OK
+    );
   } catch (error) {
     next(error);
   }
@@ -53,10 +59,12 @@ async function removeItem(req, res, next) {
   try {
     await cartService.removeItem(req.user.id, req.params.id);
 
-    res.json({
-      success: true,
-      message: "Cart item removed"
-    });
+    return successResponse(
+      res,
+      null,
+      "Cart item removed",
+      STATUS.OK
+    );
   } catch (error) {
     next(error);
   }
