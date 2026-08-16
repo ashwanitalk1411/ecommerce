@@ -42,7 +42,22 @@ CREATE DATABASE machine_test;
 
 Copy `.env.example` to `.env` and update the database credentials.
 
-### 4. Start
+### 4. Database Migration & Seed
+
+Run migrations to create tables and seed demo data:
+
+```bash
+npm run db:migrate
+npm run db:seed
+```
+
+To reset the database tables and re-seed data:
+
+```bash
+npm run db:reset
+```
+
+### 5. Start
 
 ```bash
 npm run dev
@@ -51,6 +66,10 @@ npm run dev
 The API runs at:
 
 `http://localhost:5000`
+
+Swagger Interactive Documentation:
+
+`http://localhost:5000/api-docs`
 
 ## Important Note About Admin
 
